@@ -106,7 +106,7 @@ async function loadModel(geometryURL: string, propertiesURL?: string) {
 
 await loadModel(
   "https://thatopen.github.io/engine_components/resources/streaming/small.ifc-processed.json",
-  "https://thatopen.github.io/engine_components/resources/streaming/small.ifc-processed-properties.json",
+  "https://thatopen.github.io/engine_components/resources/streaming/small.ifc-processed-properties.json"
 );
 
 /* MD
@@ -147,6 +147,7 @@ You can also customize the loader through the `culler` property:
 loader.culler.threshold = 10;
 loader.culler.maxHiddenTime = 1000;
 loader.culler.maxLostTime = 3000;
+loader.maxRamTime = 900000;
 
 /* MD
   ### ⏱️ Measuring the performance (optional)
