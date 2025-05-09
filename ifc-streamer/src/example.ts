@@ -34,11 +34,7 @@ const components = new OBC.Components();
 
 const worlds = components.get(OBC.Worlds);
 
-const world = worlds.create<
-  OBC.SimpleScene,
-  OBC.SimpleCamera,
-  OBC.SimpleRenderer
->();
+const world = worlds.create<OBC.SimpleScene, OBC.SimpleCamera, OBC.SimpleRenderer>();
 
 world.scene = new OBC.SimpleScene(components);
 world.renderer = new OBC.SimpleRenderer(components, container);
@@ -76,8 +72,7 @@ loader.world = world;
 Now, we need to set the base URL where the streamer needs to look for the tiles. In our case, we'll use the tiles we have prepared in our repository, but this should also work with your own backend.
 */
 
-loader.url =
-  "https://thatopen.github.io/engine_components/resources/streaming/";
+loader.url = "https://thatopen.github.io/engine_components/resources/streaming/";
 
 /* MD
   ### 📺 Streaming the model
@@ -106,7 +101,7 @@ async function loadModel(geometryURL: string, propertiesURL?: string) {
 
 await loadModel(
   "https://thatopen.github.io/engine_components/resources/streaming/small.ifc-processed.json",
-  "https://thatopen.github.io/engine_components/resources/streaming/small.ifc-processed-properties.json"
+  "https://thatopen.github.io/engine_components/resources/streaming/small.ifc-processed-properties.json",
 );
 
 /* MD
@@ -119,6 +114,11 @@ await loadModel(
 world.camera.controls.addEventListener("sleep", () => {
   loader.culler.needsUpdate = true;
 });
+world.camera.controls.addEventListener("update", () => {
+  if (!loader.culler.needsUpdate) {
+    loader.culler.needsUpdate = true;
+  }
+});
 
 /* MD
   ### 🧠 Stream cache
@@ -129,6 +129,7 @@ As you can imagine, downloading the geometries from the server each time can tak
 
 loader.useCache = true;
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 async function clearCache() {
   await loader.clearCache();
   window.location.reload();
